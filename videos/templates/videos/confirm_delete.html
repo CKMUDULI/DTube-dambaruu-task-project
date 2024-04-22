@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}
+    Delete Video - {{ video.title }}
+{% endblock %}
+{% block content %}
+    <h1>Delete video Post</h1>
+    <p>You are going to delete the following video post:</p>
+    <div class="video-card">
+        <video controls preload="metadata">
+            <source src="{{ video.file.url }}">
+            Your browser does not support the video tag.
+        </video>
+        <div class="descr-div">
+            <h3>
+                {{ video.title }}
+                {% if video.publish_status %}
+                    <p class="published">*Published</p>
+                {% else %}
+                    <p class="draft">*Draft</p>
+                {% endif %}
+            </h3>
+            <p class="date">Posted by {{ video.author }} on {{ video.uploaded }}</p>
+            <p>{{ video.description|linebreaks }}</p>
+        </div>
+    </div>
+    <form method="post">
+        <h2>Are you sure?</h2>
+        {% csrf_token %}
+        <p><input type="submit" value="Confirm">
+            <a href="{% url 'users:profile' %}" class="button-red">Cancel</a>
+        </p>
+    </form>
+{% endblock %}

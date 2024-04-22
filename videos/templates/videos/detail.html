@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ video.title }} by {{ video.author }}
+{% endblock %}
+{% block content %}
+    <h1>
+        {{ video.title }}
+        {% if video.author == request.user %}
+            {% if video.publish_status %}
+                <p class="published">*Published</p>
+            {% else %}
+                <p class="draft">*Draft</p>
+            {% endif %}
+        {% endif %}
+    </h1>
+
+    <div class="video-player">
+        <video controls preload="metadata">
+            <source src="{{ video.file.url }}">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class="date">Posted by {{ video.author }} on {{ video.uploaded }}</p>
+    <p>{{ video.description|default:"No Video Description"|linebreaks }}</p>
+    {% if video.author == request.user %}
+        <span class="to-right">
+            <a href="{% url 'users:videos:update' video.pk video.slug %}" class="button">Edit Video Post</a>
+            <a href="{% url 'users:videos:delete' video.pk video.slug %}" class="button-red">Delete Video Post</a>
+        </span>
+    {% endif %}
+{% endblock %}

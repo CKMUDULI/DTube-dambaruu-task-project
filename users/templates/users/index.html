@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+    {% include 'profile_detail.html' %}
+    <h1>Upload a Video</h1>
+    <p><a href="{% url 'users:videos:upload' %}">Click here</a> to upload a video.</p>
+    <h1>My Videos ({{ paginator.count }})</h1>
+    {% for video in videos %}
+        <div class="video-card">
+            <video controls preload="metadata">
+                <source src="{{ video.file.url }}">
+                Your browser does not support the video tag.
+            </video>
+            <div class="descr-div">
+                <h3>
+                    <a href="{{ video.get_absolute_url }}">{{ video.title }}</a>
+                    {% if video.publish_status %}
+                        <p class="published">*Published</p>
+                    {% else %}
+                        <p class="draft">*Draft</p>
+                    {% endif %}
+                </h3>
+                <p class="date">Posted by {{ video.author }} on {{ video.uploaded }}</p>
+                <p>{{ video.description|default:"No Video Description"|truncatewords:30|linebreaks }}</p>
+                <span class="to-right">
+                    <a href="{% url 'users:videos:update' video.pk video.slug %}" class="button">Edit Video
+                        Post</a>
+                    <a href="{% url 'users:videos:delete' video.pk video.slug %}" class="button-red">Delete Video
+                        Post</a>
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+    {% if is_paginated %}
+        {% include 'pagination.html' with page=page_obj %}
+    {% endif %}
+{% endblock %}

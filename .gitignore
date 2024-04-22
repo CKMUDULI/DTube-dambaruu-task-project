@@ -1,0 +1,5 @@
+.venv
+.idea
+media/profile_pics
+media/uploads
+*/migrations

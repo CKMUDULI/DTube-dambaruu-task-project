@@ -1,0 +1,26 @@
+<div id="header">
+    <span class="logo">DTube</span>
+    {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "my_videos" %}class="selected"{% endif %}>
+                <a href="{% url "users:profile" %}">My Videos</a>
+            </li>
+            <li {% if section == "all_videos" %}class="selected"{% endif %}>
+                <a href="{% url 'users:videos:all_video_posts' %}">All Videos</a>
+            </li>
+        </ul>
+    {% endif %}
+    <span class="user">
+        {% if request.user.is_authenticated %}
+            Hello {{ request.user.get_short_name }},
+            <a href="{% url "users:update-profile" %}">Update-Profile</a>
+            <form action="{% url 'users:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button-link">Log-Out</button>
+            </form>
+        {% else %}
+            <a href="{% url "users:login" %}">Log-in</a>
+            <a href="{% url "users:signup" %}">Sign-up</a>
+        {% endif %}
+    </span>
+</div>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}
+    Update video post - {{ video.title }}
+{% endblock %}
+{% block content %}
+    <h1>Update video Post</h1>
+    <p>Please, use the following form to update your video post:</p>
+    <div class="video-card">
+        <video controls preload="metadata">
+            <source src="{{ video.file.url }}">
+            Your browser does not support the video tag.
+        </video>
+        <div class="descr-div">
+            <h3>
+                {{ video.title }}
+                {% if video.publish_status %}
+                    <p class="published">*Published</p>
+                {% else %}
+                    <p class="draft">*Draft</p>
+                {% endif %}
+            </h3>
+            <p class="date">Posted by {{ video.author }} on {{ video.uploaded }}</p>
+            <p>{{ video.description|linebreaks }}</p>
+        </div>
+    </div>
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p>
+            <input type="submit" value="Update Video Details">
+            <a href="{% url 'users:profile' %}" class="button-red">Cancel</a>
+        </p>
+    </form>
+{% endblock %}

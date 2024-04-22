@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}All Videos{% endblock %}
+{% block content %}
+    <h1>All Videos ({{ paginator.count }})</h1>
+    {% for video in videos %}
+        <div class="video-card">
+            <video controls preload="metadata">
+                <source src="{{ video.file.url }}">
+                Your browser does not support the video tag.
+            </video>
+            <div>
+                <h3><a href="{{ video.get_absolute_url }}">{{ video.title }}</a></h3>
+                <p class="date">Posted by {{ video.author }} on {{ video.uploaded }}</p>
+                <p>{{ video.description|default:"No Video Description"|truncatewords:30|linebreaks }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    {% if is_paginated %}
+        {% include 'pagination.html' with page=page_obj %}
+    {% endif %}
+{% endblock %}
